@@ -1,22 +1,22 @@
 use std::{collections::HashMap, num::ParseFloatError};
 
 #[derive(Debug)]
-enum LustExpression {
+pub enum LustExpression {
     Symbol(String),
     Number(f64),
     List(Vec<LustExpression>),
 }
 
 #[derive(Debug)]
-enum LustException {
+pub enum LustException {
     Reason(String),
 }
 
-struct LustEnv {
+pub struct LustEnv {
     data: HashMap<String, LustExpression>,
 }
 
-fn tokenize(expression: String) -> Vec<String> {
+pub fn tokenize(expression: String) -> Vec<String> {
     expression
         .replace("(", " ( ")
         .replace(")", " ) ")
@@ -25,7 +25,7 @@ fn tokenize(expression: String) -> Vec<String> {
         .collect()
 }
 
-fn parse<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), LustException> {
+pub fn parse<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), LustException> {
     let (token, rest) = tokens.split_first().ok_or(LustException::Reason(
         "Bruh, I can't get the next Token".to_string(),
     ))?;
@@ -38,7 +38,7 @@ fn parse<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), Lus
     }
 }
 
-fn read_seq<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), LustException> {
+pub fn read_seq<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), LustException> {
     let mut res: Vec<LustExpression> = vec![];
     let mut xs = tokens;
     loop {
@@ -54,7 +54,7 @@ fn read_seq<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), 
     }
 }
 
-fn parse_atom(token: &str) -> LustExpression {
+pub fn parse_atom(token: &str) -> LustExpression {
     let potential_float: Result<f64, ParseFloatError> = token.parse();
     match potential_float {
         Ok(v) => LustExpression::Number(v),
