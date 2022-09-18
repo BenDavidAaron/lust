@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, num::ParseFloatError};
 
 #[derive(Debug)]
 enum LustExpression {
@@ -50,6 +50,14 @@ fn read_seq<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), 
         let (exp, new_xs) = parse(&xs)?;
         res.push(exp);
         xs = new_xs;
+    }
+}
+
+fn parse_atom(token: &str) -> LustExpression {
+    let potential_float: Result<f64, ParseFloatError>= token.parse();
+    match potential_float {
+        Ok(v) => LustExpression::Number(v),
+        Err(_) => LustExpression::Symbol(token.to_string().clone())
     }
 }
 
