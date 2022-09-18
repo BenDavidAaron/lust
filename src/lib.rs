@@ -55,22 +55,9 @@ fn read_seq<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), 
 }
 
 fn parse_atom(token: &str) -> LustExpression {
-    let potential_float: Result<f64, ParseFloatError>= token.parse();
+    let potential_float: Result<f64, ParseFloatError> = token.parse();
     match potential_float {
         Ok(v) => LustExpression::Number(v),
-        Err(_) => LustExpression::Symbol(token.to_string().clone())
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-    const SIMPLE_PROGRAM: &str = "(+ 2 2)";
-    #[test]
-    fn tokenize_simple_program() {
-        assert_eq!(
-            tokenize(SIMPLE_PROGRAM.to_string()),
-            vec!["(", "+", "2", "2", ")"]
-        )
+        Err(_) => LustExpression::Symbol(token.to_string().clone()),
     }
 }
