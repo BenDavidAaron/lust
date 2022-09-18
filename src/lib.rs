@@ -34,6 +34,7 @@ fn parse<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), Lus
         ")" => Err(LustException::Reason(
             "Bruh you put `)` in the wrong place!".to_string(),
         )),
+        _ => Ok((parse_atom(token), rest)),
     }
 }
 
