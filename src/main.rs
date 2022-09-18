@@ -1,8 +1,10 @@
-use lust::*;
+use lust::{tokenize, parse};
 
 fn main() {
-    let program = "(* 3 (+ 2 2))";
-    println!("{}", program);
-    let tokens = tokenize(program.to_string());
-    println!("{:?}", tokens);
+    const PROGRAM: &str = "( + 7 (+ 69 420))";
+    println!("program: {}", PROGRAM.to_string());
+    let tokens = tokenize(PROGRAM.to_string());
+    println!("tokens: {:?}", tokens);
+    let expression = parse(&tokens);
+    println!("expression: {:?}", expression)
 }
