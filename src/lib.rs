@@ -25,18 +25,48 @@ pub fn tokenize(expression: String) -> Vec<String> {
         .collect()
 }
 
+/*
+def read(ts):
+    if len(ts) == 0:
+        raise SyntaxError('unexpected EOF')
+    t = ts.pop(0)
+    if t == "(":
+        l = []
+        while ts[0] != ")":
+            l.append(read(ts))
+        ts.pop(0)
+        return l
+    elif t == ")":
+        raise SyntaxError("unexpected )")
+    else:
+        return atom(t)
+*/
+
 pub fn parse<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), LustException> {
-    let (token, rest) = tokens.split_first().ok_or(LustException::Reason(
-        "Bruh, I can't get the next Token".to_string(),
-    ))?;
-    match &token[..] {
-        "(" => read_seq(rest),
-        ")" => Err(LustException::Reason(
-            "Bruh you put `)` in the wrong place!".to_string(),
-        )),
-        _ => Ok((parse_atom(token), rest)),
+    for token in tokens.iter(){
+        match token {
+            "(" => { // push new list to stack, inc depth
+                let mut res: Vec<LustExpression> = vec![];
+                // loop through tokens until ), then break and read the remaining tokens (if there's any)
+                res.push(parse( /*parse remaining tokens*/ ))
+                
+            }
+            ")" => {
+                res.pop();
+                depth -= 1;
+            }
+            // ")"  // pop the list from stack and push into main list at depth - 1
+            //      if depth is 0, error
+            //  other token, push onto current expr
+
     }
 }
+
+(+ (+ 1 2) (+ 3 4))
+[+ 
+    [+ 1 2]
+
+]
 
 pub fn read_seq<'a>(tokens: &'a [String]) -> Result<(LustExpression, &'a [String]), LustException> {
     let mut res: Vec<LustExpression> = vec![];
